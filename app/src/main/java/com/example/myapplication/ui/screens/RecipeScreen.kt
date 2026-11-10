@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,7 +51,7 @@ fun RecipeScreen(
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -59,15 +61,24 @@ fun RecipeScreen(
                     OutlineButton(
                         text = stringResource(if (current.isFavorite) R.string.fav_remove else R.string.fav_add),
                         onClick = viewModel::toggleFavorite,
-                        color = if (current.isFavorite) colors.error else colors.onSurface
+                        color = if (current.isFavorite) colors.error else colors.primary
                     )
                 }
 
-                PhotoStub(modifier = Modifier.height(170.dp))
+                PhotoStub(modifier = Modifier.height(210.dp))
 
-                Column {
-                    Text(text = current.category.uppercase(), fontSize = 13.sp, color = colors.primary)
-                    Text(text = current.title, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Text(
+                        text = current.category.uppercase(),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = colors.tertiary
+                    )
+                    Text(
+                        text = current.title,
+                        style = MaterialTheme.typography.displaySmall,
+                        color = colors.onBackground
+                    )
                 }
 
                 TimeBox(minutes = current.cookingTime)
@@ -80,9 +91,12 @@ fun RecipeScreen(
                     text = current.instructions,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(colors.surfaceVariant)
-                        .border(1.dp, colors.outline)
-                        .padding(12.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(colors.surface)
+                        .border(1.dp, colors.outlineVariant, RoundedCornerShape(18.dp))
+                        .padding(16.dp),
+                    color = colors.onSurface,
+                    style = MaterialTheme.typography.bodyLarge
                 )
 
                 PrimaryButton(
@@ -97,22 +111,25 @@ fun RecipeScreen(
 @Composable
 private fun TimeBox(minutes: Int) {
     val colors = MaterialTheme.colorScheme
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colors.surfaceVariant)
-            .border(1.dp, colors.outline)
-            .padding(vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .clip(RoundedCornerShape(18.dp))
+            .background(colors.secondaryContainer)
+            .padding(horizontal = 18.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(R.string.minutes, minutes),
-            fontWeight = FontWeight.Bold
+            text = stringResource(R.string.time_label),
+            color = colors.onSecondaryContainer,
+            style = MaterialTheme.typography.bodyLarge
         )
         Text(
-            text = stringResource(R.string.time_label),
-            fontSize = 12.sp,
-            color = colors.onSurfaceVariant
+            text = stringResource(R.string.minutes, minutes),
+            fontWeight = FontWeight.Bold,
+            color = colors.onSecondaryContainer,
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
@@ -125,21 +142,26 @@ private fun IngredientsBox(recipe: RecipeEntity) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colors.surfaceVariant)
-            .border(1.dp, colors.outline)
-            .padding(horizontal = 12.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(colors.surface)
+            .border(1.dp, colors.outlineVariant, RoundedCornerShape(18.dp))
+            .padding(horizontal = 16.dp)
     ) {
         lines.forEachIndexed { index, line ->
             val parts = line.split(" — ", limit = 2)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 13.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = parts[0].trim())
+                Text(text = parts[0].trim(), color = colors.onSurface)
                 if (parts.size > 1) {
-                    Text(text = parts[1].trim())
+                    Text(
+                        text = parts[1].trim(),
+                        color = colors.onSurfaceVariant,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
             if (index < lines.lastIndex) {

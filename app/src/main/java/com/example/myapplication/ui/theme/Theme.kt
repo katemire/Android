@@ -15,45 +15,49 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     secondary = OrangeLight,
     onSecondary = TextDark,
-    secondaryContainer = OrangeLight,
+    secondaryContainer = Color(0xFFF0DDC9),
     onSecondaryContainer = TextDark,
+    tertiary = Sage,
+    onTertiary = Color.White,
     background = Cream,
     onBackground = TextDark,
-    surface = Cream,
+    surface = Color.White,
     onSurface = TextDark,
-    surfaceVariant = Color.White,
+    surfaceVariant = Color(0xFFF2ECE5),
     onSurfaceVariant = GrayText,
-    outline = TextDark,
-    outlineVariant = Color(0xFFD0D0D0),
+    outline = Color(0xFFCFC2B5),
+    outlineVariant = WarmBorder,
     error = RedAccent,
     onError = Color.White
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = OrangePrimary,
-    onPrimary = Color.White,
-    secondary = OrangeLight,
-    onSecondary = TextDark,
+    primary = Color(0xFFE28A6E),
+    onPrimary = Color(0xFF351B14),
+    secondary = Color(0xFFD8AD79),
+    onSecondary = Color(0xFF302316),
     secondaryContainer = DarkOrange,
     onSecondaryContainer = DarkText,
+    tertiary = Color(0xFFA4B39A),
+    onTertiary = Color(0xFF1B261B),
     background = DarkBackground,
     onBackground = DarkText,
-    surface = DarkBackground,
+    surface = Color(0xFF211F1C),
     onSurface = DarkText,
     surfaceVariant = DarkCard,
     onSurfaceVariant = DarkGrayText,
-    outline = Color(0xFF9E9289),
-    outlineVariant = Color(0xFF4A413B),
-    error = Color(0xFFEF5350),
-    onError = Color.White
+    outline = Color(0xFF75685E),
+    outlineVariant = DarkBorder,
+    error = Color(0xFFFF8A80),
+    onError = Color(0xFF3D0805)
 )
 
 private val AppShapes = Shapes(
-    extraSmall = RoundedCornerShape(0.dp),
-    small = RoundedCornerShape(0.dp),
-    medium = RoundedCornerShape(0.dp),
-    large = RoundedCornerShape(0.dp),
-    extraLarge = RoundedCornerShape(0.dp)
+    extraSmall = RoundedCornerShape(8.dp),
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(16.dp),
+    large = RoundedCornerShape(22.dp),
+    extraLarge = RoundedCornerShape(28.dp)
 )
 
 @Composable

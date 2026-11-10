@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -14,9 +16,9 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,26 +28,40 @@ import com.example.myapplication.R
 
 @Composable
 fun ScreenTitle(text: String) {
-    Text(text = text, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+    Text(
+        text = text,
+        style = MaterialTheme.typography.displaySmall,
+        color = MaterialTheme.colorScheme.onBackground,
+        modifier = Modifier.padding(top = 6.dp, bottom = 2.dp)
+    )
 }
 
 @Composable
 fun SectionLabel(text: String) {
-    Text(text = text, fontWeight = FontWeight.Bold)
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onBackground
+    )
 }
 
 @Composable
 fun PhotoStub(modifier: Modifier = Modifier, dashed: Boolean = false) {
-    val lineColor = MaterialTheme.colorScheme.outline
+    val colors = MaterialTheme.colorScheme
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .clip(RoundedCornerShape(18.dp))
+            .background(colors.secondaryContainer)
             .drawBehind {
                 if (dashed) {
-                    drawRect(
-                        color = lineColor,
-                        style = Stroke(width = 2f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f)))
+                    drawRoundRect(
+                        color = colors.outline,
+                        style = Stroke(
+                            width = 2f,
+                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 8f))
+                        ),
+                        cornerRadius = androidx.compose.ui.geometry.CornerRadius(22f, 22f)
                     )
                 }
             },
@@ -53,19 +69,22 @@ fun PhotoStub(modifier: Modifier = Modifier, dashed: Boolean = false) {
     ) {
         Text(
             text = stringResource(R.string.photo_stub),
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            color = colors.onSecondaryContainer,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp
         )
     }
 }
 
 @Composable
 fun fieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors(
-    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-    errorContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+    focusedContainerColor = MaterialTheme.colorScheme.surface,
+    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+    errorContainerColor = MaterialTheme.colorScheme.surface,
     focusedBorderColor = MaterialTheme.colorScheme.primary,
-    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-    errorBorderColor = MaterialTheme.colorScheme.error
+    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+    errorBorderColor = MaterialTheme.colorScheme.error,
+    focusedLabelColor = MaterialTheme.colorScheme.primary
 )
 
 @Composable
@@ -75,8 +94,16 @@ fun SearchField(value: String, onValueChange: (String) -> Unit, hint: String) {
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(hint) },
+        leadingIcon = {
+            Text(
+                text = "⌕",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
         singleLine = true,
-        shape = RectangleShape,
+        shape = RoundedCornerShape(18.dp),
         colors = fieldColors()
     )
 }
@@ -86,14 +113,19 @@ fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     Box(
         modifier = Modifier
-            .background(if (selected) colors.primary else colors.surfaceVariant)
-            .border(1.dp, if (selected) colors.primary else colors.outline)
+            .clip(CircleShape)
+            .background(if (selected) colors.primary else colors.surface)
+            .border(
+                width = 1.dp,
+                color = if (selected) colors.primary else colors.outlineVariant,
+                shape = CircleShape
+            )
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 17.dp, vertical = 10.dp)
     ) {
         Text(
             text = text,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.labelLarge,
             color = if (selected) colors.onPrimary else colors.onSurface
         )
     }

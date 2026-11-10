@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -26,7 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -141,7 +142,7 @@ fun SettingsScreen(
                     Text(stringResource(R.string.btn_ok))
                 }
             },
-            shape = RectangleShape,
+            shape = RoundedCornerShape(22.dp),
             containerColor = colors.surfaceVariant
         )
     }
@@ -153,8 +154,9 @@ private fun SettingsBox(content: @Composable ColumnScope.() -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colors.surfaceVariant)
-            .border(1.dp, colors.outline),
+            .clip(RoundedCornerShape(20.dp))
+            .background(colors.surface)
+            .border(1.dp, colors.outlineVariant, RoundedCornerShape(20.dp)),
         content = content
     )
 }
@@ -174,13 +176,13 @@ private fun SettingsRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-                .padding(12.dp),
+                .padding(horizontal = 16.dp, vertical = 15.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = text)
+            Text(text = text, color = colors.onSurface, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
             if (value != null) {
-                Text(text = value, color = colors.onSurfaceVariant)
+                Text(text = value, color = colors.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
             }
             if (selected) {
                 Text(text = "✓", color = colors.primary, fontWeight = FontWeight.Bold)
