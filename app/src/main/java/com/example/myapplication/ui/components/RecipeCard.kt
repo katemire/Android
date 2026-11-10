@@ -9,39 +9,57 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.example.myapplication.data.RecipeEntity
 
 @Composable
 fun RecipeCard(recipe: RecipeEntity, onClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
+    val cardShape = RoundedCornerShape(22.dp)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colors.surfaceVariant)
-            .border(1.dp, colors.outline)
+            .shadow(2.dp, cardShape)
+            .clip(cardShape)
+            .background(colors.surface)
+            .border(1.dp, colors.outlineVariant, cardShape)
             .clickable(onClick = onClick)
+            .padding(12.dp)
     ) {
-        PhotoStub(modifier = Modifier.height(110.dp))
-        Column(modifier = Modifier.padding(12.dp)) {
-            Text(text = recipe.title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        PhotoStub(modifier = Modifier.height(132.dp))
+        Column(
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 12.dp, bottom = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = recipe.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = colors.onSurface
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = recipe.category, fontSize = 13.sp, color = colors.onSurfaceVariant)
+                Text(
+                    text = recipe.category,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.tertiary,
+                    fontWeight = FontWeight.SemiBold
+                )
                 Text(
                     text = stringResource(R.string.minutes, recipe.cookingTime),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = colors.onSurfaceVariant
                 )
             }
